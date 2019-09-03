@@ -2,6 +2,13 @@
 
 import os
 
+class COL:
+	FAIL = '\033[91m'
+	WARNING = '\033[93m'
+	UNDERLINE = '\033[4m'
+	BOLD = '\033[1m'
+	ENDC = '\033[0m'
+
 def get_files():
 	LOOP_PARTITION_LETTERS = ['d', 'e', 'f', 'g', 'h', 'j']
 	LOOP_PATH = [
@@ -24,6 +31,14 @@ def get_files():
 				pass
 
 	print(temp_names_list)
+	# currently prints names of the actors
+	# so, i'll likely need to listdir paths to these names
+
+	# then put the output of those into a list
+	# and their paths into a separate list as previously "planned"
+
+	# might not need a gui after all
+	# use colours
 
 if __name__ == '__main__':
 	get_files()
