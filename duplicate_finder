@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+import os
+
+def get_files():
+	LOOP_PARTITION_LETTERS = ['d', 'e', 'f', 'g', 'h', 'j']
+	LOOP_PATH = [
+		os.path.join('Archive', 'porn', 'vids'),
+		os.path.join('Archive', 'porn', 'pics'),
+		os.path.join('Downloads', 'porn'),
+		os.path.join('arch', 'porn') # same as ARCH_DIR
+	]
+	dirs_prefix = []
+	for letter in LOOP_PARTITION_LETTERS:
+		dirs_prefix.append(os.path.join('/mnt', 'disk-%s' % letter))
+
+
+	temp_names_list = []
+	for prefix in dirs_prefix:
+		for suffix in LOOP_PATH:
+			try:
+				temp_names_list += os.listdir(os.path.join(prefix, suffix))
+			except FileNotFoundError:
+				pass
+
+	print(temp_names_list)
+
+if __name__ == '__main__':
+	get_files()
