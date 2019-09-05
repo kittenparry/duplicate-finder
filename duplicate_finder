@@ -78,8 +78,6 @@ class Gui(tk.Frame):
 		self.output_items()
 
 	def output_items(self):
-		# TODO: likely add selection='multiple' to listbox
-		# this might cause it to return a list, so change functions below accordingly
 		self.listbox = tk.Listbox(self.base, height=25, width=100)
 		self.btn_del = tk.Button(self.sub, text='Delete', command=self.delete)
 		self.btn_exp = tk.Button(self.sub, text='Explore', command=self.explore)
@@ -144,11 +142,6 @@ class Gui(tk.Frame):
 	def explore(self):
 		path = self.listbox.get(self.listbox.curselection())
 		if platform.system() == 'Linux':
-			# FIXME:
-			# subprocess.Popen(['xdg-open', path])
-			# not using xdg-open for now
-			# because ranger messes when I return to terminal
-			# after shutting down the program
 			subprocess.Popen(['pcmanfm', path])
 		# initial path vars are not with Windows in mind
 		# but let's just pretend for a moment
