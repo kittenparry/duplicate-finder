@@ -22,15 +22,30 @@ def get_files():
 		dirs_prefix.append(os.path.join('/mnt', 'disk-%s' % letter))
 
 
-	temp_names_list = []
+	dirs_models = []
 	for prefix in dirs_prefix:
 		for suffix in LOOP_PATH:
 			try:
-				temp_names_list += os.listdir(os.path.join(prefix, suffix))
+				# append full path to model names
+				dirs_models += [os.path.join(prefix, suffix, item) for item in os.listdir(os.path.join(prefix, suffix))]
 			except FileNotFoundError:
 				pass
+			except Exception as e:
+				print(e)
 
-	print(temp_names_list)
+	# list of all files & directories
+	# TODO: get duplicates from this list
+	obj_names = []
+	obj_path = []
+	for dire in dirs_models:
+		try:
+			obj_names += os.listdir(dire)
+			obj_path += [os.path.join(dire, item) for item in os.listdir(dire)]
+		except Exception as e:
+			print(e)
+
+	print(obj_names[0])
+	print(obj_path[0])
 	# currently prints names of the actors
 	# so, i'll likely need to listdir paths to these names
 
