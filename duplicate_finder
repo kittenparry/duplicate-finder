@@ -85,6 +85,7 @@ class Gui(tk.Frame):
 		self.time_passed = tk.Label(self.bottom, text='%.2f seconds to read files.' % self.passed)
 
 		self.listbox.bind('<Double-1>', self.double_click_ev)
+		self.listbox.bind('<Button-3>', self.right_click_ev)
 
 		self.build_list()
 
@@ -132,7 +133,10 @@ class Gui(tk.Frame):
 
 		self.build_list()
 
-	# double click to list element also explores
+	# needs left click select first before right click explore
+	def right_click_ev(self, event):
+		self.explore()
+
 	def double_click_ev(self, event):
 		self.delete()
 
