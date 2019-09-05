@@ -75,9 +75,9 @@ class Gui(tk.Frame):
 		self.obj_list = get_files()
 		end = time.time()
 		self.passed = end - start
-		self.output_items()
+		self.draw_elements()
 
-	def output_items(self):
+	def draw_elements(self):
 		self.listbox = tk.Listbox(self.base, height=25, width=100)
 		self.btn_del = tk.Button(self.sub, text='Delete', command=self.delete)
 		self.btn_exp = tk.Button(self.sub, text='Explore', command=self.explore)
