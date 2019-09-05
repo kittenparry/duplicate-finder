@@ -102,7 +102,10 @@ class Gui(tk.Frame):
 	def delete(self):
 		path = self.listbox.get(self.listbox.curselection())
 		print('deleting..')
-		shutil.rmtree(path)
+		if os.path.isdir(path):
+			shutil.rmtree(path)
+		elif os.path.isfile(path):
+			os.remove(path)
 		print('%sdeleted%s: %s' % (COL.FAIL, COL.ENDC, path))
 		self.del_duplicates(path)
 
