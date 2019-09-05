@@ -3,6 +3,8 @@
 import os
 import tkinter as tk
 import platform
+import time
+import subprocess
 
 class COL:
 	FAIL = '\033[91m'
@@ -55,11 +57,7 @@ def get_files():
 
 	# sort list by obj names
 	obj_list = sorted(obj_list, key=lambda x: x.name)
-
-	for n, obj in enumerate(obj_list):
-		print('---')
-		print(obj.name)
-		print(obj.path)
+	return obj_list
 
 	# currently prints names of the actors
 	# so, i'll likely need to listdir paths to these names
@@ -73,15 +71,81 @@ def get_files():
 class Gui(tk.Frame):
 	def __init__(self, master = None):
 		tk.Frame.__init__(self, master)
+		self.base = tk.Frame(master)
+		self.sub = tk.Frame(master)
+		self.bottom = tk.Frame(master)
+		self.base.grid(row=0, column=0)
+		self.sub.grid(row=1, column=0)
+		self.bottom.grid(row=2, column=0)
 
-# FIXME: actual geometry values for actual program
+		start = time.time()
+		self.obj_list = get_files()
+		end = time.time()
+		self.passed = end - start
+		self.output_items()
+
+	def output_items(self):
+		# TODO: likely add selection='multiple' to listbox
+		# this might cause it to return a list, so change functions below accordingly
+		self.listbox = tk.Listbox(self.base, height=25, width=100)
+		self.btn_del = tk.Button(self.sub, text='Delete?', command=self.delete)
+		self.btn_exp = tk.Button(self.sub, text='Explore', command=self.explore)
+		self.time_passed = tk.Label(self.bottom, text='%.2f seconds to read files.' % self.passed)
+
+		self.listbox.bind('<Double-1>', self.double_click_ev)
+
+		# populate listbox with paths
+		for n, obj in enumerate(self.obj_list):
+			self.listbox.insert(n, obj.path)
+
+		self.listbox.grid(row=0, column=0)
+		self.elements = [self.btn_del, self.btn_exp, self.time_passed]
+		for el in self.elements:
+			el.pack(side='left', pady=2, padx=1)
+
+		self.xscroll = tk.Scrollbar(self.base, orient='horizontal', command=self.listbox.xview)
+		self.xscroll.grid(row=1, column=0, sticky='ew')
+		self.yscroll = tk.Scrollbar(self.base, orient='vertical', command=self.listbox.yview)
+		self.yscroll.grid(row=0, column=1, sticky='ns')
+		self.listbox.configure(yscrollcommand=self.yscroll.set, xscrollcommand=self.xscroll.set)
+	
+	def delete(self):
+		# TODO: probably refresh list by removing both of the duplicates
+		# don't read again using get_files(), just empty listbox, remove given files from it
+		# listbox ought to have an internal function for this
+		# but how to remove the other duplicate?
+		# likely don't use listbox's internal function and remove duplicates by names in self.obj_list
+		path = self.listbox.get(self.listbox.curselection())
+		print('delete %s' % path)
+		# os.unlink(path) ?
+
+	# double click to list element also explores
+	def double_click_ev(self, event):
+		self.explore()
+
+	def explore(self):
+		path = self.listbox.get(self.listbox.curselection())
+		if platform.system() == 'Linux':
+			# FIXME:
+			# subprocess.Popen(['xdg-open', path])
+			# not using xdg-open for now
+			# because ranger messes when I return to terminal
+			# after shutting down the program
+			subprocess.Popen(['pcmanfm', path])
+		# initial path vars are not with Windows in mind
+		# but let's just pretend for a moment
+		elif platform.system() == 'Windows':
+			os.startfile(path)
+
+
+
 def get_geometry():
 	if platform.system() == 'Linux':
-		program_width = 605
+		program_width = 817
 		screen_width = 1920
 		x_position = (screen_width - program_width) / 2
-		geo_str = '%dx505+%d+30' % (program_width, x_position)
-	return ''
+		geo_str = '%dx475+%d+30' % (program_width, x_position)
+	return geo_str
 
 def start_gui():
 	root = tk.Tk(className='duplicate_finder')
@@ -92,6 +156,6 @@ def start_gui():
 	app = Gui(master=root)
 	app.mainloop()
 
+
 if __name__ == '__main__':
-	# get_files()
 	start_gui()
