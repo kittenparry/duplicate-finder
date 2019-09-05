@@ -5,6 +5,7 @@ import tkinter as tk
 import platform
 import time
 import subprocess
+import shutil
 
 class COL:
 	FAIL = '\033[91m'
@@ -59,15 +60,6 @@ def get_files():
 	obj_list = sorted(obj_list, key=lambda x: x.name)
 	return obj_list
 
-	# currently prints names of the actors
-	# so, i'll likely need to listdir paths to these names
-
-	# then put the output of those into a list
-	# and their paths into a separate list as previously "planned"
-
-	# might not need a gui after all
-	# use colours
-
 class Gui(tk.Frame):
 	def __init__(self, master = None):
 		tk.Frame.__init__(self, master)
@@ -108,10 +100,9 @@ class Gui(tk.Frame):
 		self.listbox.configure(yscrollcommand=self.yscroll.set, xscrollcommand=self.xscroll.set)
 	
 	def delete(self):
-		# TODO: actual deletion
 		path = self.listbox.get(self.listbox.curselection())
-		print('delete %s' % path)
-		# os.unlink(path) ?
+		print('%sdeleted%s: %s' % (COL.FAIL, COL.ENDC, path))
+		shutil.rmtree(path)
 		self.del_duplicates(path)
 
 	def build_list(self):
@@ -142,7 +133,7 @@ class Gui(tk.Frame):
 
 	# double click to list element also explores
 	def double_click_ev(self, event):
-		self.explore()
+		self.delete()
 
 	def explore(self):
 		path = self.listbox.get(self.listbox.curselection())
