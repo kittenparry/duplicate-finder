@@ -94,9 +94,7 @@ class Gui(tk.Frame):
 
 		self.listbox.bind('<Double-1>', self.double_click_ev)
 
-		# populate listbox with paths
-		for n, obj in enumerate(self.obj_list):
-			self.listbox.insert(n, obj.path)
+		self.build_list()
 
 		self.listbox.grid(row=0, column=0)
 		self.elements = [self.btn_del, self.btn_exp, self.time_passed]
@@ -110,14 +108,37 @@ class Gui(tk.Frame):
 		self.listbox.configure(yscrollcommand=self.yscroll.set, xscrollcommand=self.xscroll.set)
 	
 	def delete(self):
-		# TODO: probably refresh list by removing both of the duplicates
-		# don't read again using get_files(), just empty listbox, remove given files from it
-		# listbox ought to have an internal function for this
-		# but how to remove the other duplicate?
-		# likely don't use listbox's internal function and remove duplicates by names in self.obj_list
+		# TODO: actual deletion
 		path = self.listbox.get(self.listbox.curselection())
 		print('delete %s' % path)
 		# os.unlink(path) ?
+		self.del_duplicates(path)
+
+	def build_list(self):
+		self.listbox.delete(0, 'end')
+		# populate listbox with paths
+		for n, obj in enumerate(self.obj_list):
+			self.listbox.insert(n, obj.path)
+
+	# delete duplicates from listbox
+	def del_duplicates(self, path):
+		# get first duplicate obj with the path
+		for el in self.obj_list:
+			if el.path == path:
+				obj_one = el
+
+		# get second one using first one's name
+		for el in self.obj_list:
+			if el.name == obj_one.name and el.path != obj_one.path:
+				obj_two = el
+
+		# remove both from the list
+		if obj_one in self.obj_list:
+			self.obj_list.remove(obj_one)
+		if obj_two in self.obj_list:
+			self.obj_list.remove(obj_two)
+
+		self.build_list()
 
 	# double click to list element also explores
 	def double_click_ev(self, event):
