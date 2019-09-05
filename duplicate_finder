@@ -34,7 +34,6 @@ def get_files():
 				print(e)
 
 	# list of all files & directories
-	# TODO: get duplicates from this list
 	obj_names = []
 	obj_path = []
 	for dire in dirs_models:
@@ -46,6 +45,27 @@ def get_files():
 
 	print(obj_names[0])
 	print(obj_path[0])
+
+	# names & paths to duplicates
+	# duplicates_list = [name for name in obj_names if obj_names.count(name) > 1]
+	# TODO: sort duplicates (and their paths, somehow) by name
+	# could be likely done with an object array
+	# so instead of what i'm doing below, create and push objects to a single array
+	# {name: name, path: path}
+	# then sort by name, something like sorted(array, key=name) i imagine
+	# or apparently this sorted(array, key=lambda x: x.name, reverse=True) reverse if needed
+	dupl_names = []
+	dupl_path = []
+	for n, name in enumerate(obj_names):
+		if obj_names.count(name) > 1:
+			dupl_names.append(name)
+			dupl_path.append(obj_path[n])
+
+	for n, name in enumerate(dupl_names):
+		print('---')
+		print(dupl_path[n])
+		print(name)
+
 	# currently prints names of the actors
 	# so, i'll likely need to listdir paths to these names
 
