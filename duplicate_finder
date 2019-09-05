@@ -60,6 +60,7 @@ def get_files():
 	obj_list = sorted(obj_list, key=lambda x: x.name)
 	return obj_list
 
+
 class Gui(tk.Frame):
 	def __init__(self, master = None):
 		tk.Frame.__init__(self, master)
@@ -153,7 +154,6 @@ class Gui(tk.Frame):
 		# but let's just pretend for a moment
 		elif platform.system() == 'Windows':
 			os.startfile(path)
-
 
 
 def get_geometry():
