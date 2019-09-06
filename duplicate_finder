@@ -113,7 +113,7 @@ class Gui(tk.Frame):
 		self.yscroll = tk.Scrollbar(self.base, orient='vertical', command=self.listbox.yview)
 		self.yscroll.grid(row=0, column=1, sticky='ns')
 		self.listbox.configure(yscrollcommand=self.yscroll.set, xscrollcommand=self.xscroll.set)
-	
+
 	def delete(self):
 		"""Delete file/directory in selected path, re-populate the listbox."""
 		path = self.listbox.get(self.listbox.curselection())
@@ -133,7 +133,7 @@ class Gui(tk.Frame):
 
 	def del_duplicates(self, path):
 		"""Remove deleted objects from the memory & listbox.
-		
+
 		keyword args:
 		path -- path value of deleted object
 		"""
