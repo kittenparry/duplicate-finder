@@ -19,20 +19,27 @@ def get_files():
 	This is to get the files inside models' directories.
 	An example read path is /mnt/disk-f/Archive/porn/vids/model_name/*
 	"""
-	LOOP_PARTITION_LETTERS = ['d', 'e', 'f', 'g', 'h', 'j']
-	LOOP_PATH = [
+	partition_letters = ['d', 'e', 'f', 'g', 'h', 'j']
+	loop_path = [
 		os.path.join('Archive', 'porn', 'vids'),
 		os.path.join('Archive', 'porn', 'pics'),
 		os.path.join('Downloads', 'porn'),
 		os.path.join('arch', 'porn') # same as ARCH_DIR
 	]
+
 	dirs_prefix = []
-	for letter in LOOP_PARTITION_LETTERS:
-		dirs_prefix.append(os.path.join('/mnt', 'disk-%s' % letter))
+	if platform.system() == 'Linux':
+		for letter in partition_letters:
+			dirs_prefix.append(os.path.join('/mnt', 'disk-%s' % letter))
+	elif platform.system() == 'Windows':
+		partition_letters.remove('j')
+		partition_letters.append('i')
+		for letter in partition_letters:
+			dirs_prefix.append('%s:/' % letter)
 
 	dirs_models = []
 	for prefix in dirs_prefix:
-		for suffix in LOOP_PATH:
+		for suffix in loop_path:
 			try:
 				# append full path to model names
 				dirs_models += [os.path.join(prefix, suffix, item) for item in os.listdir(os.path.join(prefix, suffix))]
