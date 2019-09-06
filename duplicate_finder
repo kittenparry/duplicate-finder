@@ -15,6 +15,10 @@ class COL:
 	ENDC = '\033[0m'
 
 def get_files():
+	"""Return a list of files/folders from 1-level down of given paths.
+	This is to get the files inside models' directories.
+	An example read path is /mnt/disk-f/Archive/porn/vids/model_name/*
+	"""
 	LOOP_PARTITION_LETTERS = ['d', 'e', 'f', 'g', 'h', 'j']
 	LOOP_PATH = [
 		os.path.join('Archive', 'porn', 'vids'),
@@ -78,6 +82,10 @@ class Gui(tk.Frame):
 		self.draw_elements()
 
 	def draw_elements(self):
+		"""Listbox listing paths to duplicates,
+		Delete & explore buttons,
+		Label with load time printed.
+		"""
 		self.listbox = tk.Listbox(self.base, height=25, width=100)
 		self.btn_del = tk.Button(self.sub, text='Delete', command=self.delete)
 		self.btn_exp = tk.Button(self.sub, text='Explore', command=self.explore)
@@ -100,6 +108,7 @@ class Gui(tk.Frame):
 		self.listbox.configure(yscrollcommand=self.yscroll.set, xscrollcommand=self.xscroll.set)
 	
 	def delete(self):
+		"""Delete file/directory in selected path, re-populate the listbox."""
 		path = self.listbox.get(self.listbox.curselection())
 		print('deleting..')
 		if os.path.isdir(path):
@@ -110,13 +119,17 @@ class Gui(tk.Frame):
 		self.del_duplicates(path)
 
 	def build_list(self):
+		"""Populate the listbox with paths."""
 		self.listbox.delete(0, 'end')
-		# populate listbox with paths
 		for n, obj in enumerate(self.obj_list):
 			self.listbox.insert(n, obj.path)
 
-	# delete duplicates from listbox
 	def del_duplicates(self, path):
+		"""Remove deleted objects from the memory & listbox.
+		
+		keyword args:
+		path -- path value of deleted object
+		"""
 		# get first duplicate obj with the path
 		for el in self.obj_list:
 			if el.path == path:
@@ -143,6 +156,7 @@ class Gui(tk.Frame):
 		self.delete()
 
 	def explore(self):
+		"""Explore the selected path in file manager."""
 		path = self.listbox.get(self.listbox.curselection())
 		if platform.system() == 'Linux':
 			subprocess.Popen(['pcmanfm', path])
@@ -153,6 +167,9 @@ class Gui(tk.Frame):
 
 
 def get_geometry():
+	"""Return geometry to spawn the program in the middle of the screen.
+	Only in 1920px width.
+	"""
 	if platform.system() == 'Linux':
 		program_width = 817
 		screen_width = 1920
