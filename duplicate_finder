@@ -82,9 +82,11 @@ class Gui(tk.Frame):
 		self.sub.grid(row=1, column=0)
 		self.bottom.grid(row=2, column=0)
 
+		print('%s: Reading through directories..' % time.strftime('%H:%M:%S'))
 		start = time.time()
 		self.obj_list = get_files()
 		end = time.time()
+		print('%s: Done.' % time.strftime('%H:%M:%S'))
 		self.passed = end - start
 		self.draw_elements()
 
