@@ -184,6 +184,11 @@ def get_geometry():
 		screen_width = 1920
 		x_position = (screen_width - program_width) / 2
 		geo_str = '%dx475+%d+30' % (program_width, x_position)
+	elif platform.system() == 'Windows':
+		program_width = 621
+		screen_width = 1920
+		x_position = (screen_width - program_width) / 2
+		geo_str = '%dx475+%d+30' % (program_width, x_position)
 	return geo_str
 
 def start_gui():
