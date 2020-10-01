@@ -30,7 +30,9 @@ def get_files():
 		os.path.join('Archive', 'porn', 'vids'),
 		os.path.join('Archive', 'porn', 'pics'),
 		os.path.join('Downloads', 'porn'),
-		os.path.join('arch', 'porn') # same as ARCH_DIR
+		os.path.join('arch', 'porn'), # same as ARCH_DIR
+		os.path.join('archxdwn', 'porn', 'vid'),
+		os.path.join('archxdwn', 'porn', 'img'),
 	]
 
 	dirs_prefix = []
