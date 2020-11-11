@@ -40,7 +40,6 @@ def get_files():
 		for letter in partition_letters:
 			dirs_prefix.append(os.path.join('/mnt', 'disk-%s' % letter))
 	elif platform.system() == 'Windows':
-		partition_letters.remove('j')
 		partition_letters.remove('k')
 		partition_letters.append('i')
 		partition_letters.append('d')
